@@ -1,19 +1,27 @@
-import { STORES } from '../api/data.ts';
+import { STORES } from "../api/data.ts";
 
-const data = STORES;
-
-export default function SearchResults({ userInput }: { userInput: string }) {
+export default function SearchResults({
+  userInput,
+  secondIndex,
+}: {
+  userInput: string;
+  secondIndex: number;
+}) {
+  const data = STORES;
   const searchResults = userInput
     ? data.flatMap((stores) =>
         stores.inventory.filter((item) =>
-          item.name.toLowerCase().includes(userInput.toLowerCase())
-        )
+          item.name.toLowerCase().includes(userInput.toLowerCase()),
+        ),
       )
     : [];
+
+  const visibleItems = searchResults ? searchResults.slice(0, secondIndex) : [];
+
   return (
     <>
       <ul>
-        {searchResults?.map((item) => (
+        {visibleItems?.map((item) => (
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
